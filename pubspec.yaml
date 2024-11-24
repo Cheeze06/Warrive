@@ -12,7 +12,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://pub.dev/packages/cupertino_icons/install
   cupertino_icons: ^1.0.8
+
+  # https://pub.dev/packages/http/install
+  http: ^1.2.2
+
 
 dev_dependencies:
   flutter_test:
