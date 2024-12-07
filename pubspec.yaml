@@ -18,6 +18,12 @@ dependencies:
   # https://pub.dev/packages/http/install
   http: ^1.2.2
 
+  # https://pub.dev/packages/intl/install
+  intl: ^0.20.1
+
+  # https://pub.dev/packages/charset_converter/install
+  charset_converter: ^2.3.0
+
 
 dev_dependencies:
   flutter_test:
