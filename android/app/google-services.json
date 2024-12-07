@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424344798125",
+    "project_id": "mypj-80ab8",
+    "storage_bucket": "mypj-80ab8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424344798125:android:4479e3df0b197f87d2d724",
+        "android_client_info": {
+          "package_name": "com.example.warrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjEc_3Mz-1LoRQIZiv3yue-RQknhtwLX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
