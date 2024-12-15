@@ -10,28 +10,33 @@ class TrainInfoScreen extends StatefulWidget {
 class _TrainInfoScreenState extends State<TrainInfoScreen> {
   final TrainAPI trainAPI = TrainAPI();
   String result = "결과가 여기에 표시됩니다.";
-  String selectedDepPlace = "출발역 선택"; // 출발역 이름
-  String selectedArrPlace = "도착역 선택"; // 도착역 이름
+
+  String selectedDepPlace = "출발역 선택"; // 선택된 출발역 이름
+  String selectedArrPlace = "도착역 선택"; // 선택된 도착역 이름
+
+  String? selectedDepPlaceId; // 출발역 ID
+  String? selectedArrPlaceId; // 도착역 ID
 
   Future<void> fetchTrainData() async {
-    const depPlaceId = 'NAT010000'; // 서울역 코드
-    const arrPlaceId = 'NAT011668'; // 부산역 코드
+    if (selectedDepPlaceId == null || selectedArrPlaceId == null) {
+      setState(() {
+        result = "출발역과 도착역을 모두 선택하세요.";
+      });
+      return;
+    }
+
     final DateTime now = DateTime.now();
     final String depPlandTime =
         "${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}";
 
     final data = await trainAPI.fetchTrainInfo(
-      depPlaceId: depPlaceId,
-      arrPlaceId: arrPlaceId,
+      depPlaceId: selectedDepPlaceId!,
+      arrPlaceId: selectedArrPlaceId!,
       depPlandTime: depPlandTime,
     );
 
     setState(() {
-      if (data != null) {
-        result = data.toString();
-      } else {
-        result = "데이터를 가져오지 못했습니다.";
-      }
+      result = data != null ? data.toString() : "데이터를 가져오지 못했습니다.";
     });
   }
 
@@ -41,9 +46,10 @@ class _TrainInfoScreenState extends State<TrainInfoScreen> {
       MaterialPageRoute(
         builder: (context) => PlaceSelectionScreen(
           title: "출발역 선택",
-          onPlaceSelected: (place) {
+          onPlaceSelected: (placeName, placeId) {
             setState(() {
-              selectedDepPlace = place;
+              selectedDepPlace = placeName; // 역 이름
+              selectedDepPlaceId = placeId; // 역 ID
             });
           },
         ),
@@ -57,9 +63,10 @@ class _TrainInfoScreenState extends State<TrainInfoScreen> {
       MaterialPageRoute(
         builder: (context) => PlaceSelectionScreen(
           title: "도착역 선택",
-          onPlaceSelected: (place) {
+          onPlaceSelected: (placeName, placeId) {
             setState(() {
-              selectedArrPlace = place;
+              selectedArrPlace = placeName; // 역 이름
+              selectedArrPlaceId = placeId; // 역 ID
             });
           },
         ),
@@ -85,24 +92,24 @@ class _TrainInfoScreenState extends State<TrainInfoScreen> {
                   child: ElevatedButton(
                     onPressed: navigateToSelectDepPlace,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 25), // 높이 설정
-                      textStyle: const TextStyle(fontSize: 20), // 텍스트 크기 설정
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      textStyle: const TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: Text(selectedDepPlace, textAlign: TextAlign.center),
                   ),
                 ),
-                const SizedBox(width: 10), // 버튼 간 간격
+                const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: navigateToSelectArrPlace,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 25), // 높이 설정
-                      textStyle: const TextStyle(fontSize: 20), // 텍스트 크기 설정
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      textStyle: const TextStyle(fontSize: 20),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: Text(selectedArrPlace, textAlign: TextAlign.center),
@@ -114,10 +121,10 @@ class _TrainInfoScreenState extends State<TrainInfoScreen> {
             ElevatedButton(
               onPressed: fetchTrainData,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15), // 높이 설정
-                textStyle: const TextStyle(fontSize: 18), // 텍스트 크기 설정
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                textStyle: const TextStyle(fontSize: 18),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
               child: const Text('열차 정보 가져오기'),

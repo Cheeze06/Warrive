@@ -2,36 +2,41 @@ import 'package:flutter/material.dart';
 
 class PlaceSelectionScreen extends StatelessWidget {
   final String title;
-  final Function(String) onPlaceSelected;
+  final Function(String, String) onPlaceSelected; // 역 이름과 ID 전달
 
   PlaceSelectionScreen({
     required this.title,
     required this.onPlaceSelected,
   });
 
-  final List<String> places = [
-    "서울역",
-    "부산역",
-    "대전역",
-    "광주역",
-    "대구역",
-    "인천역",
-  ];
+  final Map<String, String> places = {
+    '서울역': 'NAT010000',
+    '부산역': 'NAT014445',
+    '대전역': 'NAT011668',
+    '김천역': 'NAT012546',
+    '동대구역': 'NAT013271',
+    '용산역': 'NAT010032',
+  };
 
   @override
   Widget build(BuildContext context) {
+    final placeEntries = places.entries.toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
       body: ListView.builder(
-        itemCount: places.length,
+        itemCount: placeEntries.length,
         itemBuilder: (context, index) {
+          final placeName = placeEntries[index].key;
+          final placeId = placeEntries[index].value;
+
           return ListTile(
-            title: Text(places[index]),
+            title: Text(placeName),
             onTap: () {
-              onPlaceSelected(places[index]);
-              Navigator.pop(context); // 선택 후 이전 화면으로 돌아가기
+              onPlaceSelected(placeName, placeId); // 이름과 ID를 반환
+              Navigator.pop(context);
             },
           );
         },
